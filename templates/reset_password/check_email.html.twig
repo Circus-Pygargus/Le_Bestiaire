@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Email de demande de nouveau mot de passe envoyé{% endblock %}
+
+{% block body %}
+    <p>
+        Si un compte correspondant à cette adresse email existe, alors un email contenant un lien permettant de modifier le mot de passe vient d'être envoyé. Ce lien exipre dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+    </p>
+    <p>Si tu penses que tu n'as pas reçu cet email, vérifie le dossier spam ou <a href="{{ path('app_forgot_password_request') }}">refais une demande</a>.</p>
+{% endblock %}
