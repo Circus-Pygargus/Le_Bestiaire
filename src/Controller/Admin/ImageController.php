@@ -32,4 +32,14 @@ class ImageController extends AbstractController
 
         return $this->render('admin/image/create.html.twig');
     }
+
+    /**
+     * @Route("/edit", name="edit")
+     */
+    public function edit (): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_CONTRIBUTOR');
+
+        return $this->render('admin/image/edit.html.twig');
+    }
 }
