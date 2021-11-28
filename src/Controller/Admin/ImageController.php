@@ -22,4 +22,14 @@ class ImageController extends AbstractController
 
         return $this->render('admin/image/list.html.twig');
     }
+
+    /**
+     * @Route("/create", name="create")
+     */
+    public function create (): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_CONTRIBUTOR');
+
+        return $this->render('admin/image/create.html.twig');
+    }
 }
