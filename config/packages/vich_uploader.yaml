@@ -1,0 +1,12 @@
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+        bestiaire_images:
+            uri_prefix: '%app.path.bestiaire_images%'
+            namer: Vich\UploaderBundle\Naming\UniqidNamer
+            upload_destination: '%kernel.project_dir%/public%app.path.bestiaire_images%'
+        bestiaire_movies:
+            uri_prefix: '%app.path.bestiaire_movies%'
+            namer: Vich\UploaderBundle\Naming\UniqidNamer
+            upload_destination: '%kernel.project_dir%/public%app.path.bestiaire_movies%'
