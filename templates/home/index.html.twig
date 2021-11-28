@@ -26,5 +26,14 @@
     </ul>
 </div>
 
-<a href="{{ path('app_login') }}">Connection</a>
+<div>
+    <a href="{{ path('app_login') }}">Connection</a>
+</div>
+
+{% if is_granted('ROLE_CONTRIBUTOR') %}
+<div>
+    <a href="{{ path('admin') }}">Administration</a>
+</div>
+{% endif %}
+
 {% endblock %}
