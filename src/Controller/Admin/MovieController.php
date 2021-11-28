@@ -32,4 +32,14 @@ class MovieController extends AbstractController
 
         return $this->render('admin/movie/create.html.twig');
     }
+
+    /**
+     * @Route("/edit", name="edit")
+     */
+    public function edit (): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_CONTRIBUTOR');
+
+        return $this->render('admin/movie/edit.html.twig');
+    }
 }
