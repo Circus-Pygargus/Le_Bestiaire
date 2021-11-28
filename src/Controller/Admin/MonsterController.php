@@ -32,4 +32,14 @@ class MonsterController extends AbstractController
 
         return $this->render('admin/monster/create.html.twig');
     }
+
+    /**
+     * @Route("/edit", name="edit")
+     */
+    public function edit (): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_CONTRIBUTOR');
+
+        return $this->render('admin/monster/edit.html.twig');
+    }
 }
