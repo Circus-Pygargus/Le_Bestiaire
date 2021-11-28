@@ -22,4 +22,14 @@ class MovieController extends AbstractController
 
         return $this->render('admin/movie/list.html.twig');
     }
+
+    /**
+     * @Route("/create", name="create")
+     */
+    public function create (): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_CONTRIBUTOR');
+
+        return $this->render('admin/movie/create.html.twig');
+    }
 }
