@@ -22,4 +22,14 @@ class CategoryController extends AbstractController
 
         return $this->render('admin/category/list.html.twig');
     }
+
+    /**
+     * @Route("/create", name="create")
+     */
+    public function create (): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_CONTRIBUTOR');
+
+        return $this->render('admin/category/create.html.twig');
+    }
 }
