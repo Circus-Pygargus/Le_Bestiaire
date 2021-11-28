@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Security;
 
 use App\Entity\User;
-use App\Form\RegistrationFormType;
+use App\Form\Security\RegistrationFormType;
 use App\Security\EmailVerifier;
 use App\Security\UserAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -53,7 +53,7 @@ class RegistrationController extends AbstractController
                     ->from(new Address('lebestiaire@richard.meuret.dev', 'Le Bestiaire Bot'))
                     ->to($user->getEmail())
                     ->subject('Confirme ton adresse email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
+                    ->htmlTemplate('security/registration/confirmation_email.html.twig')
             );
             // do anything else you need here, like send an email
 
@@ -66,7 +66,7 @@ class RegistrationController extends AbstractController
             );
         }
 
-        return $this->render('registration/register.html.twig', [
+        return $this->render('security/registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }
