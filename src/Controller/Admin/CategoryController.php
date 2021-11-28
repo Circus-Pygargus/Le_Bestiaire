@@ -32,4 +32,14 @@ class CategoryController extends AbstractController
 
         return $this->render('admin/category/create.html.twig');
     }
+
+    /**
+     * @Route("/edit", name="edit")
+     */
+    public function edit (): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        return $this->render('admin/category/edit.html.twig');
+    }
 }
