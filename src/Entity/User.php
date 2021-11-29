@@ -9,6 +9,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -66,6 +67,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="author")
      */
     private $comments;
+
+    /**
+     * @var \DateTime $createdAt
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime $updatedAt
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    private $updatedAt;
+
+    /**
+     * @var \DateTime $lastVisit
+     * @ORM\Column(type="datetime")
+     */
+    private $lastVisit;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $visitsNb;
 
     public function __construct()
     {
@@ -268,6 +296,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $comment->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function getLastVisit(): ?\DateTimeInterface
+    {
+        return $this->lastVisit;
+    }
+
+    public function setLastVisit(\DateTimeInterface $lastVisit): self
+    {
+        $this->lastVisit = $lastVisit;
+
+        return $this;
+    }
+
+    public function getVisitsNb(): ?int
+    {
+        return $this->visitsNb;
+    }
+
+    public function setVisitsNb(int $visitsNb): self
+    {
+        $this->visitsNb = $visitsNb;
 
         return $this;
     }
