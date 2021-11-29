@@ -34,7 +34,7 @@ class Category
     private $name;
 
     /**
-     * @ORM\OneToOne(targetEntity=Image::class, inversedBy="featuredMovie", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity=Image::class, inversedBy="categoryFeatured", cascade={"persist"})
      */
     private $featuredImage;
 

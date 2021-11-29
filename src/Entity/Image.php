@@ -79,7 +79,7 @@ class Image
     /**
      * @ORM\OneToOne(targetEntity=Category::class, mappedBy="featuredImage", cascade={"persist"})
      */
-    private $category;
+    private $categoryFeatured;
 
     /**
      * @ORM\OneToOne(targetEntity=Monster::class, mappedBy="featuredImage", cascade={"persist"})
@@ -191,24 +191,24 @@ class Image
         return $this->updatedAt;
     }
 
-    public function getCategory(): ?Category
+    public function getCategoryFeatured(): ?Category
     {
-        return $this->category;
+        return $this->categoryFeatured;
     }
 
-    public function setCategory(?Category $category): self
+    public function setCategoryFeatured(?Category $categoryFeatured): self
     {
         // unset the owning side of the relation if necessary
-        if ($category === null && $this->category !== null) {
-            $this->category->setFeaturedImage(null);
+        if ($categoryFeatured === null && $this->categoryFeatured !== null) {
+            $this->categoryFeatured->setFeaturedImage(null);
         }
 
         // set the owning side of the relation if necessary
-        if ($category !== null && $category->getFeaturedImage() !== $this) {
-            $category->setFeaturedImage($this);
+        if ($categoryFeatured !== null && $categoryFeatured->getFeaturedImage() !== $this) {
+            $categoryFeatured->setFeaturedImage($this);
         }
 
-        $this->category = $category;
+        $this->categoryFeatured = $categoryFeatured;
 
         return $this;
     }
