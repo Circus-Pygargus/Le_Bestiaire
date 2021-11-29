@@ -7,18 +7,21 @@
         <div class="alert  alert-success" role="alert">{{ message }}</div>
     {% endfor %}
 
+
+    <h1 class="h3 mb-3 font-weight-normal">Se connecter</h1>
+
+    {% if app.user %}
+        <div class="mb-3">
+            Tu es logué en tant que {{ app.user.username }}, <a href="{{ path('app_logout') }}">déconnexion</a>
+        </div>
+    {% endif %}
+
+    {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
     <form method="post">
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
 
-        {% if app.user %}
-            <div class="mb-3">
-                Tu es logué en tant que {{ app.user.username }}, <a href="{{ path('app_logout') }}">déconnexion</a>
-            </div>
-        {% endif %}
-
-        <h1 class="h3 mb-3 font-weight-normal">Se connecter</h1>
         <label for="inputUsername">Pseudo</label>
         <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" required autofocus>
         <label for="inputPassword">Mot de passe</label>
@@ -42,8 +45,8 @@
         <button class="btn btn-lg btn-primary" type="submit">
             Connexion
         </button>
-
     </form>
-
     <a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a>
+    {% endif %}
+
 {% endblock %}
