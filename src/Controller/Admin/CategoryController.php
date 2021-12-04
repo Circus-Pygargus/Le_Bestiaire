@@ -49,8 +49,16 @@ class CategoryController extends AdminController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->em->persist($category);
-            $this->em->flush();
+            try {
+                $this->em->persist($category);
+                $this->em->flush();
+            } catch (\Exception $e) {
+                $this->logger->error($e->getMessage());
+                $this->logger->debug($e->getTraceAsString());
+
+                $this->addFlash('error', 'Un problème est survenu, la catégorie n\'a pas été créée !');
+                return $this->redirectToRoute('admin_categories_list');
+            }
 
             $this->addFlash('success', 'La catégorie <strong>' . $category->getName() . '</strong> a bien été crée.');
 
