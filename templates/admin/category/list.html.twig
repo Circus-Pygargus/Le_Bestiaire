@@ -37,7 +37,7 @@
                         {% endif %}
 
                         <td>Pas d'image représentative</td>
-                        d
+                        
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
                             <td><a href="{{ path('admin_categories_delete', { id: notValidCategory.id }) }}">Supprimer</a></td>
                         {% endif %}
