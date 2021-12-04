@@ -2,8 +2,11 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Category;
+use App\Form\Category\CreateCategoryFormType;
 use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -37,11 +40,27 @@ class CategoryController extends AbstractController
     /**
      * @Route("/create", name="create")
      */
-    public function create (): Response
+    public function create (Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_CONTRIBUTOR');
 
-        return $this->render('admin/category/create.html.twig');
+        $category = new Category();
+        $form = $this->createForm(CreateCategoryFormType::class, $category);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($category);
+            $em->flush();
+
+            $this->addFlash('success', 'La catégorie <strong>' . $category->getName() . '</strong> a bien été crée.');
+
+            return $this->redirectToRoute('admin_categories_list');
+        }
+
+        return $this->render('admin/category/create.html.twig', [
+            'categoryForm' => $form->createView()
+        ]);
     }
 
     /**
