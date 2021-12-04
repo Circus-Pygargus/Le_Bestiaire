@@ -4,4 +4,10 @@
 
 {% block adminContent %}
     <h2>Édition d'une catégorie</h2>
+
+    {{ form(categoryForm, {
+        'attr': {
+            'novalidate': 'novalidate'
+        }
+    }) }}
 {% endblock %}

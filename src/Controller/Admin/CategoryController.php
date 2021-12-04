@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class CategoryController
  * @package App\Controller\Admin
- * @Route("/admin/Categories", name="admin_categories_")
+ * @Route("/admin/categories", name="admin_categories_")
  */
 class CategoryController extends AdminController
 {
@@ -63,13 +63,42 @@ class CategoryController extends AdminController
     }
 
     /**
-     * @Route("/edit", name="edit")
+     * @Route("/edit/{slug}", name="edit")
      */
-    public function edit (): Response
+    public function edit (Request $request, CategoryRepository $categoryRepository, string $slug): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        return $this->render('admin/category/edit.html.twig');
+        $category = $categoryRepository->findOneBy(['slug' => $slug]);
+        if (!$category) {
+            $this->addFlash('error', 'La catégorie <strong>' . $slug . '</strong> n\'existe pas');
+
+            return $this->redirectToRoute('admin_categories_list');
+        }
+
+        $form = $this->createForm(CreateCategoryFormType::class, $category);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $this->em->persist($category);
+                $this->em->flush();
+            } catch (\Exception $e) {
+                $this->logger->error($e->getMessage());
+                $this->logger->debug($e->getTraceAsString());
+
+                $this->addFlash('error', 'Un problème est survenu, la catégorie n\'a pas été modifiée !');
+                return $this->redirectToRoute('admin_categories_list');
+            }
+
+            $this->addFlash('success', 'La catégorie <strong>' . $category->getName() . '</strong> a bien été modifiée.');
+
+            return $this->redirectToRoute('admin_categories_list');
+        }
+
+        return $this->render('admin/category/edit.html.twig', [
+            'categoryForm' => $form->createView()
+        ]);
     }
 
     /**

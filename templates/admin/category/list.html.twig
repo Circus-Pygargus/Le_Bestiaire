@@ -30,8 +30,14 @@
             {% if categories.invalid is defined %}
                 {% for notValidCategory in categories.invalid %}
                     <tr>
-                        <td>{{ notValidCategory.name }}</td>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <td><a href="{{ path('admin_categories_edit', { slug: notValidCategory.slug }) }}">{{ notValidCategory.name }}</a></td>
+                        {% else %}
+                            <td>{{ notValidCategory.name }}</td>
+                        {% endif %}
+
                         <td>Pas d'image représentative</td>
+                        d
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
                             <td><a href="{{ path('admin_categories_delete', { id: notValidCategory.id }) }}">Supprimer</a></td>
                         {% endif %}
