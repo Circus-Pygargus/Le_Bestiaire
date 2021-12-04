@@ -17,6 +17,10 @@
     {% endif %}
 
     {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+    <p>
+        Entre tes identifiants ou
+        <a href="{{ path('app_register') }}">crée un compte</a>
+    </p>
     <form method="post">
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
