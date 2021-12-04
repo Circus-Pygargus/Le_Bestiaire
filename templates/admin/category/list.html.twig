@@ -9,6 +9,10 @@
         <div class="alert alert-success" role="alert">{{ message|raw }}</div>
     {% endfor %}
 
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-error" role="alert">{{ message|raw }}</div>
+    {% endfor %}
+
     <a href="{{ path('admin_categories_create') }}">Créer</a>
 
     {% if categories and categories|length > 0 %}
@@ -17,6 +21,9 @@
                 <tr>
                     <th>Nom</th>
                     <th>Remarque</th>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <th>Supprimer</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -25,6 +32,9 @@
                     <tr>
                         <td>{{ notValidCategory.name }}</td>
                         <td>Pas d'image représentative</td>
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <td><a href="{{ path('admin_categories_delete', { id: notValidCategory.id }) }}">Supprimer</a></td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             {% endif %}
