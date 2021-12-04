@@ -49,9 +49,8 @@ class CategoryController extends AdminController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($category);
-            $em->flush();
+            $this->em->persist($category);
+            $this->em->flush();
 
             $this->addFlash('success', 'La catégorie <strong>' . $category->getName() . '</strong> a bien été crée.');
 
