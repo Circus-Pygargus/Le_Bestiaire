@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\AdminController;
 use App\Entity\Category;
-use App\Form\Category\CreateCategoryFormType;
+use App\Form\Category\CategoryFormType;
 use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,7 +45,7 @@ class CategoryController extends AdminController
         $this->denyAccessUnlessGranted('ROLE_CONTRIBUTOR');
 
         $category = new Category();
-        $form = $this->createForm(CreateCategoryFormType::class, $category);
+        $form = $this->createForm(CategoryFormType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -84,7 +84,7 @@ class CategoryController extends AdminController
             return $this->redirectToRoute('admin_categories_list');
         }
 
-        $form = $this->createForm(CreateCategoryFormType::class, $category);
+        $form = $this->createForm(CategoryFormType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
