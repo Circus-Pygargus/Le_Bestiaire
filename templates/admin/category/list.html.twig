@@ -6,4 +6,27 @@
     <h2>Liste des catégories</h2>
 
     <a href="{{ path('admin_categories_create') }}">Créer</a>
+
+    {% if categories and categories|length > 0 %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Remarque</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% if categories.invalid is defined %}
+                {% for notValidCategory in categories.invalid %}
+                    <tr>
+                        <td>{{ notValidCategory.name }}</td>
+                        <td>Pas d'image représentative</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Il n'y a pas de catégories enregistrées.</p>
+    {% endif %}
 {% endblock %}

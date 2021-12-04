@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,11 +17,21 @@ class CategoryController extends AbstractController
     /**
      * @Route("/list", name="list")
      */
-    public function list (): Response
+    public function list (CategoryRepository $categoryRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_CONTRIBUTOR');
 
-        return $this->render('admin/category/list.html.twig');
+        $categories = [];
+
+        $invalidCategories = $categoryRepository->findBy(['featuredImage' => null]);
+
+        if ($invalidCategories) {
+            $categories['invalid'] = $invalidCategories;
+        }
+
+        return $this->render('admin/category/list.html.twig', [
+            'categories' => $categories
+        ]);
     }
 
     /**
