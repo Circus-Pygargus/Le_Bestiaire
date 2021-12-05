@@ -92,11 +92,19 @@ class MonsterController extends AdminController
             return $this->redirectToRoute('admin_monsters_list');
         }
 
+        $recordedMonsterName = $monster->getName();
+
         $form = $this->createForm(MonsterFormType::class, $monster);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             try {
+                $existingMonsters = $monsterRepository->findBy(['name' => $monster->getName()]);
+                if ($existingMonsters && (count($existingMonsters) && $monster->getName() !== $recordedMonsterName)) {
+                    $form->get('name')->addError(new FormError('Ce nom est déjà utilisé par un autre monstre'));
+                    return $this->render('admin/monster/edit.html.twig', [
+                        'monsterForm' => $form->createView()
+                    ]);
+                }
                 $this->em->persist($monster);
                 $this->em->flush();
             } catch (\Exception $e) {
