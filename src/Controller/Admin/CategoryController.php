@@ -6,6 +6,7 @@ use App\Controller\Admin\AdminController;
 use App\Entity\Category;
 use App\Form\Category\CategoryFormType;
 use App\Repository\CategoryRepository;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,7 +41,7 @@ class CategoryController extends AdminController
     /**
      * @Route("/create", name="create")
      */
-    public function create (Request $request): Response
+    public function create (Request $request, CategoryRepository $categoryRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_CONTRIBUTOR');
 
@@ -50,6 +51,13 @@ class CategoryController extends AdminController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
+                $existingCategory = $categoryRepository->findOneBy(['name' => $category->getName()]);
+                if ($existingCategory) {
+                    $form->get('name')->addError(new FormError('Ce nom est déjà utilisé par une autre catégorie'));
+                    return $this->render('admin/category/create.html.twig', [
+                        'categoryForm' => $form->createView()
+                    ]);
+                }
                 $this->em->persist($category);
                 $this->em->flush();
             } catch (\Exception $e) {
