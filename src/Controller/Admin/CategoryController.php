@@ -60,7 +60,7 @@ class CategoryController extends AdminController
                 return $this->redirectToRoute('admin_categories_list');
             }
 
-            $this->addFlash('success', 'La catégorie <strong>' . $category->getName() . '</strong> a bien été crée.');
+            $this->addFlash('success', 'La catégorie <strong>' . $category->getName() . '</strong> a bien été créée.');
 
             return $this->redirectToRoute('admin_categories_list');
         }
