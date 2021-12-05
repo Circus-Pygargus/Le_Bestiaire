@@ -14,4 +14,39 @@
     {% endfor %}
 
     <a href="{{ path('admin_monsters_create') }}">Créer</a>
+
+    {% if monsters and monsters|length > 0 %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Remarque</th>
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <th>Supprimer</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+            {% if monsters.invalid is defined %}
+                {% for notValidMonster in monsters.invalid %}
+                    <tr>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <td><a href="{{ path('admin_monsters_edit', { slug: notValidMonster.slug }) }}">{{ notValidMonster.name }}</a></td>
+                        {% else %}
+                            <td>{{ notValidMonster.name }}</td>
+                        {% endif %}
+
+                        <td>Pas d'image représentative</td>
+
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <td><a href="{{ path('admin_monsters_delete', { id: notValidMonster.id }) }}">Supprimer</a></td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Il n'y a pas de monstres enregistrés.</p>
+    {% endif %}
 {% endblock %}
