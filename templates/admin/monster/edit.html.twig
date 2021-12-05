@@ -4,4 +4,10 @@
 
 {% block adminContent %}
     <h2>Édition d'un monstre</h2>
+
+    {{ form(monsterForm, {
+        'attr': {
+            'novalidate': 'novalidate'
+        }
+    }) }}
 {% endblock %}
