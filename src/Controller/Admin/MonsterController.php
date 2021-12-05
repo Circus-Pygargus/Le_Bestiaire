@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MonsterController extends AdminController
 {
     /**
-     * @Route("list", name="list")
+     * @Route("/list", name="list")
      */
     public function list (): Response
     {
