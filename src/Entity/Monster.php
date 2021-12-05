@@ -31,7 +31,7 @@ class Monster
     private $slug;
 
     /**
-     * @ORM\Column(type="string", length=128)
+     * @ORM\Column(type="string", length=128, unique=true)
      */
     private $name;
 
