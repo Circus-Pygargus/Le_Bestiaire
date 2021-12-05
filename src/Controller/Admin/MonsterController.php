@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Controller\Admin\AdminController;
 use App\Entity\Monster;
 use App\Form\Monster\MonsterFormType;
+use App\Repository\MonsterRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,11 +20,21 @@ class MonsterController extends AdminController
     /**
      * @Route("/list", name="list")
      */
-    public function list (): Response
+    public function list (MonsterRepository $monsterRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_CONTRIBUTOR');
 
-        return $this->render('admin/monster/list.html.twig');
+        $monsters = [];
+
+        $invalidMonsters = $monsterRepository->findBy(['featuredImage' => null]);
+
+        if ($invalidMonsters) {
+            $monsters['invalid'] = $invalidMonsters;
+        }
+
+        return $this->render('admin/monster/list.html.twig', [
+            'monsters' => $monsters
+        ]);
     }
 
     /**
