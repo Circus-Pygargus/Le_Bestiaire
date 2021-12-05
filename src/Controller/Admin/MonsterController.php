@@ -79,4 +79,28 @@ class MonsterController extends AdminController
 
         return $this->render('admin/monster/edit.html.twig');
     }
+
+    /**
+     * @Route("/delete/{id}", name="delete")
+     */
+    public function delete (MonsterRepository $monsterRepository, int $id): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
+
+        try {
+            $monster = $monsterRepository->findOneBy(['id' => $id]);
+
+            $this->em->remove($monster);
+            $this->em->flush();
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+            $this->logger->debug($e->getTraceAsString());
+
+            $this->addFlash('error', 'Un problème est survenu, le monstre n\'a pas été supprimé !');
+            return $this->redirectToRoute('admin_monsters_list');
+        }
+
+        $this->addFlash('success', 'Le monstre <strong>' . $monster->getName() . '</strong> vient d\'être supprimé');
+        return $this->redirectToRoute('admin_monsters_list');
+    }
 }
