@@ -92,11 +92,20 @@ class CategoryController extends AdminController
             return $this->redirectToRoute('admin_categories_list');
         }
 
+        $recordedCategoryName = $category->getName();
+
         $form = $this->createForm(CategoryFormType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
+                $existingCategories = $categoryRepository->findBy(['name' => $category->getName()]);
+                if ($existingCategories && (count($existingCategories) && $category->getName() !== $recordedCategoryName)) {
+                    $form->get('name')->addError(new FormError('Ce nom est déjà utilisé par une autre catégorie'));
+                    return $this->render('admin/category/edit.html.twig', [
+                        'monsterForm' => $form->createView()
+                    ]);
+                }
                 $this->em->persist($category);
                 $this->em->flush();
             } catch (\Exception $e) {
