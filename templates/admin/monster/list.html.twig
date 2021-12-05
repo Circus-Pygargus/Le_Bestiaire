@@ -5,5 +5,13 @@
 {% block adminContent %}
     <h2>Liste des monstres</h2>
 
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">{{ message|raw }}</div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-error" role="alert">{{ message|raw }}</div>
+    {% endfor %}
+
     <a href="{{ path('admin_monsters_create') }}">Créer</a>
 {% endblock %}
