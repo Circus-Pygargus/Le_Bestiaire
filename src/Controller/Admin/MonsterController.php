@@ -6,6 +6,7 @@ use App\Controller\Admin\AdminController;
 use App\Entity\Monster;
 use App\Form\Monster\MonsterFormType;
 use App\Repository\MonsterRepository;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,7 +41,7 @@ class MonsterController extends AdminController
     /**
      * @Route("/create", name="create")
      */
-    public function create (Request $request): Response
+    public function create (Request $request, MonsterRepository $monsterRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_CONTRIBUTOR');
 
@@ -50,6 +51,13 @@ class MonsterController extends AdminController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
+                $existingMonster = $monsterRepository->findOneBy(['name' => $monster->getName()]);
+                if ($existingMonster) {
+                    $form->get('name')->addError(new FormError('Ce nom est déjà utilisé par un autre monstre'));
+                    return $this->render('admin/monster/create.html.twig', [
+                        'monsterForm' => $form->createView()
+                    ]);
+                }
                 $this->em->persist($monster);
                 $this->em->flush();
             } catch (\Exception $e) {
