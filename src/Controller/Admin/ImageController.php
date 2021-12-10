@@ -4,8 +4,10 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\AdminController;
 use App\Entity\Image;
-use App\Form\Image\ImageFormType;
+use App\Form\Image\CreateImageFormType;
+use App\Form\Image\EditImageFormType;
 use App\Repository\ImageRepository;
+use ContainerTG8X8dM\getImageRepositoryService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,7 +42,7 @@ class ImageController extends AdminController
 
         $image = new Image();
 
-        $form = $this->createForm(ImageFormType::class, $image);
+        $form = $this->createForm(CreateImageFormType::class, $image);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -66,13 +68,39 @@ class ImageController extends AdminController
     }
 
     /**
-     * @Route("/edit", name="edit")
+     * @Route("/edit/{slug}", name="edit")
      */
-    public function edit (): Response
+    public function edit (Request $request, ImageRepository $imageRepository, string $slug): Response
     {
         $this->denyAccessUnlessGranted('ROLE_CONTRIBUTOR');
 
-        return $this->render('admin/image/edit.html.twig');
+        $image = $imageRepository->findOneBy(['slug' => $slug]);
+        if (!$image) {
+            $this->addFlash('error', 'L\'image <strong> ' . $slug . ' n\'existe pas');
+            return $this->redirectToRoute('admin_images_list');
+        }
+        $form = $this->createForm(EditImageFormType::class, $image);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $this->em->persist($image);
+                $this->em->flush();
+
+                $this->addFlash('success', 'L\image <strong> ' . $image->getName() . 'vient d\'être supprimée');
+
+                return $this->redirectToRoute('admin_images_list');
+            } catch (\Exception $e) {
+                $this->logger->error($e->getMessage());
+                $this->logger->debug($e->getTraceAsString());
+
+                $this->addFlash('error', 'Un problème est survenu, l\image n\'a pas été effacée');
+            }
+        }
+
+        return $this->render('admin/image/edit.html.twig', [
+            'imageForm' => $form->createView()
+        ]);
     }
 
     /**
