@@ -138,7 +138,8 @@ class Image
         return $this->filename;
     }
 
-    public function setFilename(string $filename): self
+    // $filename is null by default or I can't $em->remove() because of vichUploader
+    public function setFilename(string $filename = null): self
     {
         $this->filename = $filename;
 
