@@ -47,7 +47,7 @@ class ImageController extends AdminController
 
                 $this->addFlash('success', 'L\'image ' . $image->getName() . ' vient d\'être créée');
 
-                return $this->render('admin/image/list.html.twig');
+                return $this->redirectToRoute('admin_images_list');
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage());
                 $this->logger->debug($e->getTraceAsString());
