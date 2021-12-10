@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ImageController extends AdminController
 {
     /**
-     * @Route("list", name="list")
+     * @Route("/list", name="list")
      */
     public function list (ImageRepository $imageRepository): Response
     {
