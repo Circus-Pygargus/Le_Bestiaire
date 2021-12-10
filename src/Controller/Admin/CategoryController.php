@@ -6,7 +6,6 @@ use App\Controller\Admin\AdminController;
 use App\Entity\Category;
 use App\Form\Category\CategoryFormType;
 use App\Repository\CategoryRepository;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -51,26 +50,18 @@ class CategoryController extends AdminController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $existingCategory = $categoryRepository->findOneBy(['name' => $category->getName()]);
-                if ($existingCategory) {
-                    $form->get('name')->addError(new FormError('Ce nom est déjà utilisé par une autre catégorie'));
-                    return $this->render('admin/category/create.html.twig', [
-                        'categoryForm' => $form->createView()
-                    ]);
-                }
                 $this->em->persist($category);
                 $this->em->flush();
+
+                $this->addFlash('success', 'La catégorie <strong>' . $category->getName() . '</strong> a bien été créée.');
+
+                return $this->redirectToRoute('admin_categories_list');
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage());
                 $this->logger->debug($e->getTraceAsString());
 
                 $this->addFlash('error', 'Un problème est survenu, la catégorie n\'a pas été créée !');
-                return $this->redirectToRoute('admin_categories_list');
             }
-
-            $this->addFlash('success', 'La catégorie <strong>' . $category->getName() . '</strong> a bien été créée.');
-
-            return $this->redirectToRoute('admin_categories_list');
         }
 
         return $this->render('admin/category/create.html.twig', [
@@ -92,33 +83,23 @@ class CategoryController extends AdminController
             return $this->redirectToRoute('admin_categories_list');
         }
 
-        $recordedCategoryName = $category->getName();
-
         $form = $this->createForm(CategoryFormType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $existingCategories = $categoryRepository->findBy(['name' => $category->getName()]);
-                if ($existingCategories && (count($existingCategories) && $category->getName() !== $recordedCategoryName)) {
-                    $form->get('name')->addError(new FormError('Ce nom est déjà utilisé par une autre catégorie'));
-                    return $this->render('admin/category/edit.html.twig', [
-                        'monsterForm' => $form->createView()
-                    ]);
-                }
                 $this->em->persist($category);
                 $this->em->flush();
+
+                $this->addFlash('success', 'La catégorie <strong>' . $category->getName() . '</strong> a bien été modifiée.');
+
+                return $this->redirectToRoute('admin_categories_list');
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage());
                 $this->logger->debug($e->getTraceAsString());
 
                 $this->addFlash('error', 'Un problème est survenu, la catégorie n\'a pas été modifiée !');
-                return $this->redirectToRoute('admin_categories_list');
             }
-
-            $this->addFlash('success', 'La catégorie <strong>' . $category->getName() . '</strong> a bien été modifiée.');
-
-            return $this->redirectToRoute('admin_categories_list');
         }
 
         return $this->render('admin/category/edit.html.twig', [

@@ -4,14 +4,11 @@ namespace App\Controller\Security;
 
 use App\Entity\User;
 use App\Form\Security\RegistrationFormType;
-use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use App\Security\UserAuthenticator;
-use App\Service\SpecialCharParser;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
@@ -34,7 +31,6 @@ class RegistrationController extends AbstractController
      */
     public function register(
         Request $request,
-        UserRepository $userRepository,
         UserPasswordHasherInterface $userPasswordHasher,
         UserAuthenticatorInterface $userAuthenticator,
         UserAuthenticator $authenticator,
@@ -46,26 +42,6 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $error = false;
-            $slug = SpecialCharParser::makeSlug($user->getUsername());
-            $existingUserBySlug = $userRepository->findOneBy(['slug' => $slug]);
-            if ($existingUserBySlug) {
-                $form->get('username')->addError(new FormError('Ce pseudo est déjà utilisé'));
-                $error = true;
-            }
-            $existingUserByEmail = $userRepository->findOneBy(['email' => $user->getEmail()]);
-            if ($existingUserByEmail) {
-                $form->get('email')->addError(new FormError('Cet email est déjà utilisé'));
-                $error = true;
-            }
-            if ($error) {
-                return $this->render('security/registration/register.html.twig', [
-                    'registrationForm' => $form->createView(),
-                ]);
-            }
-
-            $user->setSlug($slug);
-
             // encode the plain password
             $user->setPassword(
             $userPasswordHasher->hashPassword(

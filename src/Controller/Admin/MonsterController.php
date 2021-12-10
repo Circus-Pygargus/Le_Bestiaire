@@ -6,7 +6,6 @@ use App\Controller\Admin\AdminController;
 use App\Entity\Monster;
 use App\Form\Monster\MonsterFormType;
 use App\Repository\MonsterRepository;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -51,26 +50,18 @@ class MonsterController extends AdminController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $existingMonster = $monsterRepository->findOneBy(['name' => $monster->getName()]);
-                if ($existingMonster) {
-                    $form->get('name')->addError(new FormError('Ce nom est déjà utilisé par un autre monstre'));
-                    return $this->render('admin/monster/create.html.twig', [
-                        'monsterForm' => $form->createView()
-                    ]);
-                }
                 $this->em->persist($monster);
                 $this->em->flush();
+
+                $this->addFlash('success', 'Le monstre <strong>' . $monster->getName() . '</strong> a bien été créé.');
+
+                return $this->redirectToRoute('admin_monsters_list');
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage());
                 $this->logger->debug($e->getTraceAsString());
 
                 $this->addFlash('error', 'Un problème est survenu, le monstre n\'a pas été créé !');
-                return $this->redirectToRoute('admin_monsters_list');
             }
-
-            $this->addFlash('success', 'Le monstre <strong>' . $monster->getName() . '</strong> a bien été créé.');
-
-            return $this->redirectToRoute('admin_monsters_list');
         }
 
         return $this->render('admin/monster/create.html.twig', [
@@ -92,32 +83,23 @@ class MonsterController extends AdminController
             return $this->redirectToRoute('admin_monsters_list');
         }
 
-        $recordedMonsterName = $monster->getName();
-
         $form = $this->createForm(MonsterFormType::class, $monster);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $existingMonsters = $monsterRepository->findBy(['name' => $monster->getName()]);
-                if ($existingMonsters && (count($existingMonsters) && $monster->getName() !== $recordedMonsterName)) {
-                    $form->get('name')->addError(new FormError('Ce nom est déjà utilisé par un autre monstre'));
-                    return $this->render('admin/monster/edit.html.twig', [
-                        'monsterForm' => $form->createView()
-                    ]);
-                }
                 $this->em->persist($monster);
                 $this->em->flush();
+
+                $this->addFlash('success', 'Le monstre <strong>' . $monster->getName() . '</strong> a bien été modifié.');
+
+                return $this->redirectToRoute('admin_monsters_list');
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage());
                 $this->logger->debug($e->getTraceAsString());
 
                 $this->addFlash('error', 'Un problème est survenu, le monstre n\'a pas été modifié !');
-                return $this->redirectToRoute('admin_monsters_list');
             }
-
-            $this->addFlash('success', 'Le monstre <strong>' . $monster->getName() . '</strong> a bien été modifié.');
-
-            return $this->redirectToRoute('admin_monsters_list');
         }
 
         return $this->render('admin/monster/edit.html.twig', [
