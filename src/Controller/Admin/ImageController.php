@@ -51,6 +51,8 @@ class ImageController extends AdminController
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage());
                 $this->logger->debug($e->getTraceAsString());
+
+                $this->addFlash('error', 'Un problème est survenu, le monstre n\'a pas été créé');
             }
         }
 
