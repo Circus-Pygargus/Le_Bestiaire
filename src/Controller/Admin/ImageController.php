@@ -20,11 +20,15 @@ class ImageController extends AdminController
     /**
      * @Route("list", name="list")
      */
-    public function list (): Response
+    public function list (ImageRepository $imageRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_CONTRIBUTOR');
 
-        return $this->render('admin/image/list.html.twig');
+        $images = $imageRepository->findAll();
+
+        return $this->render('admin/image/list.html.twig', [
+            'images' => $images
+        ]);
     }
 
     /**
