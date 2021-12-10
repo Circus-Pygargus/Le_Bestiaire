@@ -15,6 +15,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * @ORM\Entity(repositoryClass=ImageRepository::class)
  * @UniqueEntity(fields={"name"}, message="Ce nom est déjà utilisé par une autre image")
@@ -90,6 +92,9 @@ class Image
 
     /**
      * @ORM\ManyToMany(targetEntity=Monster::class, mappedBy="images", cascade={"persist"})
+     * @Assert\Count(
+     *      min = 1,
+     *      minMessage = "Tu dois choisir que monstre est / sont sur la photo",
      */
     private $monsters;
 

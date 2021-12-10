@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\Image as ImageConstraint;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -101,7 +102,13 @@ class ImageFormType extends AbstractType
             ])
             ->add('monsters', EntityType::class, [
                 'label' => 'Qui est sur cette photo ?',
-                'required' => false,
+                'required' => true,
+                'constraints' => [
+                    new Count([
+                        'min' => 1,
+                        'minMessage' => 'Tu dois choisir le (ou les) monstre présent sur cette photo'
+                    ])
+                ],
                 'class' => Monster::class,
                 'query_builder' => function (MonsterRepository $monsterRepository) {
                     return $monsterRepository->createQueryBuilder('m')
