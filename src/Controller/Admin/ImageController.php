@@ -74,4 +74,28 @@ class ImageController extends AdminController
 
         return $this->render('admin/image/edit.html.twig');
     }
+
+    /**
+     * @Route("/delete/{id}", name="delete")
+     */
+    public function delete (ImageRepository $imageRepository, int $id): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
+
+        try {
+            $image = $imageRepository->findOneBy(['id' => $id]);
+
+            $this->em->remove($image);
+            $this->em->flush();
+
+            $this->addFlash('success', 'L\'image <strong>' . $image->getName() . '</strong> vient d\'être supprimée');
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+            $this->logger->debug($e->getTraceAsString());
+
+            $this->addFlash('error', 'Un problème est survenu, l\'ìmage n\'a pas été supprimée');
+        }
+
+        return $this->redirectToRoute('admin_images_list');
+    }
 }

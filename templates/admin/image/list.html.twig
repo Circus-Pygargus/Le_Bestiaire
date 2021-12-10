@@ -30,7 +30,7 @@
                     <tr>
                         <td>{{ image.name }}</td>
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
-                            <td>Supprimer</td>
+                            <td><a href="{{ path('admin_images_delete', {id: image.id}) }}">Supprimer</a></td>
                         {% endif %}
                     </tr>
                 {% endfor %}
