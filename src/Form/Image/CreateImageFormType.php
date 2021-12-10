@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
-class ImageFormType extends AbstractType
+class CreateImageFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
