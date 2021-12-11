@@ -6,6 +6,7 @@ use App\Controller\Admin\AdminController;
 use App\Entity\Category;
 use App\Form\Category\CategoryFormType;
 use App\Repository\CategoryRepository;
+use App\Repository\MonsterRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -114,13 +115,21 @@ class CategoryController extends AdminController
     /**
      * @Route("/delete/{id}", name="delete")
      */
-    public function delete (CategoryRepository $categoryRepository, int $id): Response
+    public function delete (CategoryRepository $categoryRepository, MonsterRepository $monsterRepository, int $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
 
         try {
             $category = $categoryRepository->findOneBy(['id' => $id]);
 
+            if ($category) {
+                $monsters = $monsterRepository->findBy(['category' => $category]);
+
+                if ($monsters) {
+                    $this->addFlash('error', 'La catégorie <strong>' . $category->getName() . '</strong> n\'a pas été supprimée car certains monstres y sont attachés.');
+                    return $this->redirectToRoute('admin_categories_list');
+                }
+            }
             $this->em->remove($category);
             $this->em->flush();
 
