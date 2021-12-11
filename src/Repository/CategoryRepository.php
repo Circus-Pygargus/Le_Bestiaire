@@ -47,4 +47,14 @@ class CategoryRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getValids (): Array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.featuredImage is not null')
+            ->orderBy('c.name')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

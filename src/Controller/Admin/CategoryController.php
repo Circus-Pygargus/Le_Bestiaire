@@ -27,9 +27,13 @@ class CategoryController extends AdminController
         $categories = [];
 
         $invalidCategories = $categoryRepository->findBy(['featuredImage' => null]);
+        $validCategories = $categoryRepository->getValids();
 
         if ($invalidCategories) {
             $categories['invalid'] = $invalidCategories;
+        }
+        if ($validCategories) {
+            $categories['valid'] = $validCategories;
         }
 
         return $this->render('admin/category/list.html.twig', [

@@ -44,6 +44,23 @@
                     </tr>
                 {% endfor %}
             {% endif %}
+            {% if categories.valid is defined %}
+                {% for validCategory in categories.valid %}
+                    <tr>toto
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <td><a href="{{ path('admin_categories_edit', { slug: validCategory.slug }) }}">{{ validCategory.name }}</a></td>
+                        {% else %}
+                            <td>{{ validCategory.name }}</td>
+                        {% endif %}
+
+                        <td></td>
+
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <td><a href="{{ path('admin_categories_delete', { id: validCategory.id }) }}">Supprimer</a></td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            {% endif %}
             </tbody>
         </table>
     {% else %}
