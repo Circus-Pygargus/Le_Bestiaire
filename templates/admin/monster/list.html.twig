@@ -38,6 +38,24 @@
                     </tr>
                 {% endfor %}
             {% endif %}
+            {% if monsters.valid is defined %}
+                {% for validMonster in monsters.valid %}
+                    <tr>toto
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <td><a href="{{ path('admin_categories_edit', { slug: validMonster.slug }) }}">{{ validMonster.name }}</a></td>
+                        {% else %}
+                            <td>{{ validMonster.name }}</td>
+                        {% endif %}
+
+                        <td>{{ validMonster.category.name }}</td>
+                        <td></td>
+
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <td><a href="{{ path('admin_categories_delete', { id: validMonster.id }) }}">Supprimer</a></td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            {% endif %}
             </tbody>
         </table>
     {% else %}

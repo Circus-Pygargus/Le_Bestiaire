@@ -27,9 +27,13 @@ class MonsterController extends AdminController
         $monsters = [];
 
         $invalidMonsters = $monsterRepository->findBy(['featuredImage' => null]);
+        $validMonsters = $monsterRepository->getValids();
 
         if ($invalidMonsters) {
             $monsters['invalid'] = $invalidMonsters;
+        }
+        if ($validMonsters) {
+            $monsters['valid'] = $validMonsters;
         }
 
         return $this->render('admin/monster/list.html.twig', [

@@ -47,4 +47,15 @@ class MonsterRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getValids (): Array
+    {
+        return $this->createQueryBuilder('m')
+            ->where('m.featuredImage is not null')
+            ->orderBy('m.category')
+            ->addOrderBy('m.name')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
