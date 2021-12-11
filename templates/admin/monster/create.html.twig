@@ -2,9 +2,9 @@
 
 {% block title %}Le Bestiaire _ admin monster create{% endblock %}
 
-{% block adminContent %}
-    <h2>Création d'un nouveau monstre</h2>
+{% block adminPageTitle %}Création d'un nouveau monstre{% endblock %}
 
+{% block adminContent %}
     {{ form(monsterForm, {
         'attr': {
             'novalidate': 'novalidate'

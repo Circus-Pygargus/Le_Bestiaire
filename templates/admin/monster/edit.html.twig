@@ -2,9 +2,9 @@
 
 {% block title %}Le Bestiaire _ admin monster edit{% endblock %}
 
-{% block adminContent %}
-    <h2>Édition d'un monstre</h2>
+{% block adminPageTitle %}Édition d'un monstre{% endblock %}
 
+{% block adminContent %}
     {{ form(monsterForm, {
         'attr': {
             'novalidate': 'novalidate'

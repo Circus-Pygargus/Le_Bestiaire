@@ -2,9 +2,9 @@
 
 {% block title %}Le Bestiaire _ admin monsters list{% endblock %}
 
-{% block adminContent %}
-    <h2>Liste des monstres</h2>
+{% block adminPageTitle %}Liste des monstres{% endblock %}
 
+{% block adminContent %}
     <a href="{{ path('admin_monsters_create') }}">Créer</a>
 
     {% if monsters and monsters|length > 0 %}

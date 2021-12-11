@@ -2,9 +2,9 @@
 
 {% block title %}Le Bestiaire _ admin images list{% endblock %}
 
-{% block adminContent %}
-    <h2>Liste des images</h2>
+{% block adminPageTitle %}Liste des images{% endblock %}
 
+{% block adminContent %}
     <a href="{{ path('admin_images_create') }}">Créer</a>
 
     {% if images is defined and images|length > 0 %}

@@ -19,10 +19,12 @@
         </ul>
     </nav>
 
+    <h2>
+        {% block adminPageTitle %}{% endblock %}
+    </h2>
+
     {% include 'admin/_layouts/flash-message.html.twig' %}
 
     {% block adminContent %}
-
-
     {% endblock %}
 {% endblock %}

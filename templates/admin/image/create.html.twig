@@ -2,9 +2,9 @@
 
 {% block title %}Le Bestiaire _ admin image create{% endblock %}
 
-{% block adminContent %}
-    <h2>Import d'une nouvelle image</h2>
+{% block adminPageTitle %}Import d'une nouvelle image{% endblock %}
 
+{% block adminContent %}
     {{ form(imageForm, {
         'attr': {
             'novalidate': 'novalidate'

@@ -2,9 +2,9 @@
 
 {% block title %}Le Bestiaire _ admin category list{% endblock %}
 
-{% block adminContent %}
-    <h2>Liste des catégories</h2>
+{% block adminPageTitle %}Liste des catégories{% endblock %}
 
+{% block adminContent %}
     <a href="{{ path('admin_categories_create') }}">Créer</a>
 
     {% if categories and categories|length > 0 %}
