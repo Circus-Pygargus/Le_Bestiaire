@@ -19,5 +19,10 @@
         </ul>
     </nav>
 
-    {% block adminContent %}{% endblock %}
+    {% include 'admin/_layouts/flash-message.html.twig' %}
+
+    {% block adminContent %}
+
+
+    {% endblock %}
 {% endblock %}

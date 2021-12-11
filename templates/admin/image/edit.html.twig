@@ -5,10 +5,6 @@
 {% block adminContent %}
     <h2>Édition d'une image</h2>
 
-    {% for message in app.flashes('error') %}
-        <div class="alert alert-error" role="alert">{{ message|raw }}</div>
-    {% endfor %}
-
     {{ form(imageForm, {
         'attr': {
             'novalidate': 'novalidate'
