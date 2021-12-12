@@ -13,6 +13,8 @@
                 <tr>
                     <th>Nom</th>
                     <th>Image représentative</th>
+                    <th>Commentaire</th>
+                    <th>Nombre de monstres</th>
                     {% if is_granted('ROLE_SUPER_ADMIN') %}
                         <th>Supprimer</th>
                     {% endif %}
@@ -29,7 +31,15 @@
                         {% endif %}
 
                         <td>Pas d'image représentative</td>
-                        
+
+                        {% if notValidCategory.explanatoryText is defined and notValidCategory.explanatoryText|length > 0 %}
+                            <td>{{  notValidCategory.explanatoryText|striptags|raw > 20 ? notValidCategory.explanatoryText|striptags|raw|slice(0, 21)|split(' ')|slice(0, -1)|join(' ') ~ '…' : explanatoryText.explanatoryText|striptags|raw }}</td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+
+                        <td>{{ notValidCategory.monsters|length }}</td>
+
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
                             <td><a href="{{ path('admin_categories_delete', { id: notValidCategory.id }) }}">Supprimer</a></td>
                         {% endif %}
@@ -57,6 +67,11 @@
                                 "
                             >
                         </td>
+
+                        {% if validCategory.explanatoryText %}
+                            <td>{{  validCategory.explanatoryText|striptags|raw > 20 ? validCategory.explanatoryText|striptags|raw|slice(0, 21)|split(' ')|slice(0, -1)|join(' ') ~ '…' : validCategory.explanatoryText|striptags|raw }}</td>
+                        {% endif %}
+                        <td>{{ validCategory.monsters|length }}</td>
 
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
                             <td><a href="{{ path('admin_categories_delete', { id: validCategory.id }) }}">Supprimer</a></td>
