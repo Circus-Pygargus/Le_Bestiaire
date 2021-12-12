@@ -13,6 +13,9 @@
                 <tr>
                     <th>Nom</th>
                     <th>Image</th>
+                    <th>Texte alternatif</th>
+                    <th>Catégorie représentée</th>
+                    <th>Monstre représenté</th>
                     {% if is_granted('ROLE_SUPER_ADMIN') %}
                         <th>Supprimer</th>
                     {% endif %}
@@ -22,6 +25,7 @@
                 {% for image in images %}
                     <tr>
                         <td><a href="{{ path('admin_images_edit', { slug: image.slug }) }}">{{ image.name }}</a></td>
+
                         <td>
                             <img
                                 src="/uploads/bestiaire/images/{{ image.filename }}"
@@ -34,6 +38,21 @@
                                 "
                             >
                         </td>
+
+                        <td>{{ image.alt }}</td>
+
+                        {% if image.categoryFeatured is defined and image.categoryFeatured %}
+                            <td>{{ image.categoryFeatured.name }}</td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+
+                        {% if image.monsterFeatured %}
+                            <td>{{ image.monsterFeatured.name }}</td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
                             <td><a href="{{ path('admin_images_delete', {id: image.id}) }}">Supprimer</a></td>
                         {% endif %}
