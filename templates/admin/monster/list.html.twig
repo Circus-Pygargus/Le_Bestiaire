@@ -13,7 +13,7 @@
                 <tr>
                     <th>Nom</th>
                     <th>Catégorie</th>
-                    <th>Remarque</th>
+                    <th>Image représentative</th>
                     {% if is_granted('ROLE_SUPER_ADMIN') %}
                         <th>Supprimer</th>
                     {% endif %}
@@ -48,7 +48,15 @@
                         {% endif %}
 
                         <td>{{ validMonster.category.name }}</td>
-                        <td></td>
+                        <td>
+                            <img
+                                src="/uploads/bestiaire/images/{{ validMonster.featuredImage.fileName }}"                                style="
+                                max-width:100px;
+                                max-height:100px;
+                                width:auto;
+                                height:auto;"
+                            >
+                        </td>
 
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
                             <td><a href="{{ path('admin_categories_delete', { id: validMonster.id }) }}">Supprimer</a></td>
