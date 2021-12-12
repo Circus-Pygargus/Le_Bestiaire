@@ -12,7 +12,7 @@
             <thead>
                 <tr>
                     <th>Nom</th>
-                    <th>Remarque</th>
+                    <th>Image représentative</th>
                     {% if is_granted('ROLE_SUPER_ADMIN') %}
                         <th>Supprimer</th>
                     {% endif %}
@@ -38,14 +38,25 @@
             {% endif %}
             {% if categories.valid is defined %}
                 {% for validCategory in categories.valid %}
-                    <tr>toto
+                    <tr>
                         {% if is_granted('ROLE_ADMIN') %}
                             <td><a href="{{ path('admin_categories_edit', { slug: validCategory.slug }) }}">{{ validCategory.name }}</a></td>
                         {% else %}
                             <td>{{ validCategory.name }}</td>
                         {% endif %}
 
-                        <td></td>
+                        <td>
+                            <img
+                                src="/uploads/bestiaire/images/{{ validCategory.featuredImage.fileName }}"
+                                alt="{{ validCategory.featuredImage.alt }}"
+                                style="
+                                    max-width: 100px;
+                                    max-height: 100px;
+                                    width: auto;
+                                    height: auto;
+                                "
+                            >
+                        </td>
 
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
                             <td><a href="{{ path('admin_categories_delete', { id: validCategory.id }) }}">Supprimer</a></td>
