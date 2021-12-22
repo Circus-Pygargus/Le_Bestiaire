@@ -33,7 +33,7 @@
                         <td>Pas d'image représentative</td>
 
                         {% if notValidCategory.explanatoryText is defined and notValidCategory.explanatoryText|length > 0 %}
-                            <td>{{  notValidCategory.explanatoryText|striptags|raw > 20 ? notValidCategory.explanatoryText|striptags|raw|slice(0, 21)|split(' ')|slice(0, -1)|join(' ') ~ '…' : explanatoryText.explanatoryText|striptags|raw }}</td>
+                            <td>{{  notValidCategory.explanatoryText|striptags|raw > 20 ? notValidCategory.explanatoryText|striptags|raw|slice(0, 21)|split(' ')|slice(0, -1)|join(' ') ~ '…' : notValidCategory.explanatoryText|striptags|raw }}</td>
                         {% else %}
                             <td></td>
                         {% endif %}
