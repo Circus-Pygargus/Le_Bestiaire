@@ -30,10 +30,12 @@ class MonsterController extends AdminController
         $validMonsters = $monsterRepository->getValids();
 
         if ($invalidMonsters) {
-            $monsters['invalid'] = $invalidMonsters;
+//            $monsters['invalid'] = $invalidMonsters;
+            $monsters = array_merge($monsters, $invalidMonsters);
         }
         if ($validMonsters) {
-            $monsters['valid'] = $validMonsters;
+//            $monsters['valid'] = $validMonsters;
+            $monsters = array_merge($monsters, $validMonsters);
         }
 
         return $this->render('admin/monster/list.html.twig', [

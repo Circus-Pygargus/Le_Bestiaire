@@ -13,57 +13,94 @@
                 <tr>
                     <th>Nom</th>
                     <th>Catégorie</th>
+                    <th>Surnoms</th>
+                    <th>Genre</th>
+                    <th>Parents</th>
+                    <th>Enfants</th>
+                    <th>Date de naissance</th>
+                    <th>Date d'arrivée</th>
+                    <th>Date de départ</th>
+                    <th>Raison du départ</th>
                     <th>Image représentative</th>
+                    <th>Nombre d'images</th>
+                    <th>Texte supplémentaire</th>
+                    <th>Cossard</th>
                     {% if is_granted('ROLE_SUPER_ADMIN') %}
                         <th>Supprimer</th>
                     {% endif %}
                 </tr>
             </thead>
             <tbody>
-            {% if monsters.invalid is defined %}
-                {% for notValidMonster in monsters.invalid %}
+                {% for monster in monsters %}
                     <tr>
                         {% if is_granted('ROLE_ADMIN') %}
-                            <td><a href="{{ path('admin_monsters_edit', { slug: notValidMonster.slug }) }}">{{ notValidMonster.name }}</a></td>
+                            <td><a href="{{ path('admin_monsters_edit', { slug: monster.slug }) }}">{{ monster.name }}</a></td>
                         {% else %}
-                            <td>{{ notValidMonster.name }}</td>
+                            <td>{{ monster.name }}</td>
                         {% endif %}
 
-                        <td>{{ notValidMonster.category.name }}</td>
-                        <td>Pas d'image représentative</td>
+                        <td>{{ monster.category.name }}</td>
 
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
-                            <td><a href="{{ path('admin_monsters_delete', { id: notValidMonster.id }) }}">Supprimer</a></td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-            {% endif %}
-            {% if monsters.valid is defined %}
-                {% for validMonster in monsters.valid %}
-                    <tr>toto
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <td><a href="{{ path('admin_categories_edit', { slug: validMonster.slug }) }}">{{ validMonster.name }}</a></td>
-                        {% else %}
-                            <td>{{ validMonster.name }}</td>
-                        {% endif %}
+                        <td>{% if monster.nicknames %}{{ monster.nicknames }}{% endif %}</td>
 
-                        <td>{{ validMonster.category.name }}</td>
+                        <td>{% if monster.gender %}{{ monster.gender }}{% endif %}</td>
+
                         <td>
-                            <img
-                                src="/uploads/bestiaire/images/{{ validMonster.featuredImage.fileName }}"                                style="
-                                max-width:100px;
-                                max-height:100px;
-                                width:auto;
-                                height:auto;"
-                            >
+                        {% if monster.parents %}
+                            {% for parent in monster.parents %}
+                                {{ parent.name }} <br>
+                            {% endfor %}
+                        {% endif %}
                         </td>
 
+                        <td>
+                        {% if monster.children %}
+                            {% for child in monster.children %}
+                                {{ child.name }} <br>
+                            {% endfor %}
+                        {% endif %}
+                        </td>
+
+                        <td>{% if monster.birthday %}{{ monster.birthday }}{% endif %}</td>
+
+                        <td>{% if monster.arrivalDate %}{{ monster.arrivalDate }}{% endif %}</td>
+
+                        <td>{% if monster.leavingDate %}{{ monster.leavingDate }}{% endif %}</td>
+
+                        <td>{% if monster.reasonForLeaving %}{{ monster.reasonForLeaving }}{% endif %}</td>
+
+                        {% if monster.featuredImage %}
+                            <td>
+                                <img
+                                    src="/uploads/bestiaire/images/{{ monster.featuredImage.fileName }}"                                style="
+                                    max-width:100px;
+                                    max-height:100px;
+                                    width:auto;
+                                    height:auto;"
+                                >
+                            </td>
+                        {% else %}
+                            <td>Pas d'image représentative</td>
+                        {% endif %}
+
+                        <td>{% if monster.images %}{{ monster.images|length }}{% endif %}</td>
+
+                        <td>
+                            {% if monster.explanatoryText %}
+                                {{  monster.explanatoryText|striptags|raw > 20
+                                    ? monster.explanatoryText|striptags|raw|slice(0, 21)|split(' ')|slice(0, -1)|join(' ') ~ '…'
+                                    : monster.explanatoryText|striptags|raw
+                                }}
+                            {% endif %}
+                        </td>
+
+                        <td>{% if monster.cossard %}Oui{% endif %}</td>
+
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
-                            <td><a href="{{ path('admin_categories_delete', { id: validMonster.id }) }}">Supprimer</a></td>
+                            <td><a href="{{ path('admin_monsters_delete', { id: monster.id }) }}">Supprimer</a></td>
                         {% endif %}
                     </tr>
                 {% endfor %}
-            {% endif %}
             </tbody>
         </table>
     {% else %}
