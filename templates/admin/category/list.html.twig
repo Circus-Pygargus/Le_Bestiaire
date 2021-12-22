@@ -7,7 +7,7 @@
 {% block adminContent %}
     <a href="{{ path('admin_categories_create') }}">Créer</a>
 
-    {% if categories and categories|length > 0 %}
+    {% if categories is defined and categories %}
         <table>
             <thead>
                 <tr>
@@ -21,44 +21,19 @@
                 </tr>
             </thead>
             <tbody>
-            {% if categories.invalid is defined %}
-                {% for notValidCategory in categories.invalid %}
-                    <tr>
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <td><a href="{{ path('admin_categories_edit', { slug: notValidCategory.slug }) }}">{{ notValidCategory.name }}</a></td>
-                        {% else %}
-                            <td>{{ notValidCategory.name }}</td>
-                        {% endif %}
+            {% for category in categories %}
+                <tr>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <td><a href="{{ path('admin_categories_edit', { slug: category.slug }) }}">{{ category.name }}</a></td>
+                    {% else %}
+                        <td>{{ category.name }}</td>
+                    {% endif %}
 
-                        <td>Pas d'image représentative</td>
-
-                        {% if notValidCategory.explanatoryText is defined and notValidCategory.explanatoryText|length > 0 %}
-                            <td>{{  notValidCategory.explanatoryText|striptags|raw > 20 ? notValidCategory.explanatoryText|striptags|raw|slice(0, 21)|split(' ')|slice(0, -1)|join(' ') ~ '…' : notValidCategory.explanatoryText|striptags|raw }}</td>
-                        {% else %}
-                            <td></td>
-                        {% endif %}
-
-                        <td>{{ notValidCategory.monsters|length }}</td>
-
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
-                            <td><a href="{{ path('admin_categories_delete', { id: notValidCategory.id }) }}">Supprimer</a></td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-            {% endif %}
-            {% if categories.valid is defined %}
-                {% for validCategory in categories.valid %}
-                    <tr>
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <td><a href="{{ path('admin_categories_edit', { slug: validCategory.slug }) }}">{{ validCategory.name }}</a></td>
-                        {% else %}
-                            <td>{{ validCategory.name }}</td>
-                        {% endif %}
-
+                    {% if category.featuredImage %}
                         <td>
                             <img
-                                src="/uploads/bestiaire/images/{{ validCategory.featuredImage.fileName }}"
-                                alt="{{ validCategory.featuredImage.alt }}"
+                                src="/uploads/bestiaire/images/{{ category.featuredImage.fileName }}"
+                                alt="{{ category.featuredImage.alt }}"
                                 style="
                                     max-width: 100px;
                                     max-height: 100px;
@@ -67,18 +42,23 @@
                                 "
                             >
                         </td>
+                    {% else %}
+                        <td>Pas d'image représentative</td>
+                    {% endif %}
 
-                        {% if validCategory.explanatoryText %}
-                            <td>{{  validCategory.explanatoryText|striptags|raw > 20 ? validCategory.explanatoryText|striptags|raw|slice(0, 21)|split(' ')|slice(0, -1)|join(' ') ~ '…' : validCategory.explanatoryText|striptags|raw }}</td>
-                        {% endif %}
-                        <td>{{ validCategory.monsters|length }}</td>
+                    {% if category.explanatoryText is defined and category.explanatoryText %}
+                        <td>{{  category.explanatoryText|striptags|raw > 20 ? category.explanatoryText|striptags|raw|slice(0, 21)|split(' ')|slice(0, -1)|join(' ') ~ '…' : category.explanatoryText|striptags|raw }}</td>
+                    {% else %}
+                        <td></td>
+                    {% endif %}
 
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
-                            <td><a href="{{ path('admin_categories_delete', { id: validCategory.id }) }}">Supprimer</a></td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-            {% endif %}
+                    <td>{{ category.monsters|length }}</td>
+
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <td><a href="{{ path('admin_categories_delete', { id: category.id }) }}">Supprimer</a></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
             </tbody>
         </table>
     {% else %}

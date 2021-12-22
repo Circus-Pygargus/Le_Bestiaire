@@ -31,10 +31,10 @@ class CategoryController extends AdminController
         $validCategories = $categoryRepository->getValids();
 
         if ($invalidCategories) {
-            $categories['invalid'] = $invalidCategories;
+            $categories = array_merge($categories, $invalidCategories);
         }
         if ($validCategories) {
-            $categories['valid'] = $validCategories;
+            $categories = array_merge($categories, $validCategories);
         }
 
         return $this->render('admin/category/list.html.twig', [
