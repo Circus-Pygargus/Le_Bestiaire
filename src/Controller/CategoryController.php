@@ -7,17 +7,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class CategoryController
+ * @package App\Controller
+ * @Route("/categories", name="app_categories")
+ */
 class CategoryController extends AbstractController
 {
     /**
-     * @Route("/categories/{slug}", name="app_categories")
+     * @Route("/", name="_list")
      */
-    public function index (CategoryRepository $categoryRepository, string $slug='all'): Response
+    public function list (CategoryRepository $categoryRepository): Response
     {
-
         $categories = $categoryRepository->getValids();
 
-        return $this->render('category/index.html.twig', [
+        return $this->render('category/list.html.twig', [
             'categories' => $categories
         ]);
     }
