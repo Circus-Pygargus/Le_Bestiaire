@@ -1,0 +1,46 @@
+<div id="monster-infos">
+    {% if monster.category %}
+        <h3>Catégorie :</h3>
+        <p>{{ monster.category.name }}</p>
+    {% endif %}
+
+    {% if monster.gender %}
+        <h3>Genre :</h3>
+        <p>{{ monster.gender }}</p>
+    {% endif %}
+
+    {% if monster.nicknames %}
+        <h3>surnoms :</h3>
+        <p>{{ monster.nicknames }}</p>
+    {% endif %}
+
+    {% if monster.birthday %}
+        <h3>Date de naissance :</h3>
+        <p>{{ monster.birthday }}</p>
+    {% endif %}
+
+    {% if monster.arrivalDate %}
+            <h3>Date d'arrivée' :</h3>
+        <p>{{ monster.arrivalDate }}</p>
+    {% endif %}
+
+    {% if monster.leavingDate %}
+        <h3>Date de départ :</h3>
+        <p>{{ monster.leavingDate }}</p>
+    {% endif %}
+
+    {% if monster.reasonForLeaving %}
+        <h3>Raison du départ :</h3>
+        <p>{{ monster.reasonForLeaving }}</p>
+    {% endif %}
+
+    {% if monster.cossard %}
+        <h3>Cossard :</h3>
+        <p>{{ monster.cossard }}</p>
+    {% endif %}
+
+    {% if monster.explanatoryText %}
+        <h3>Supplément :</h3>
+        <div>{{ monster.explanatoryText }}</div>
+    {% endif %}
+</div>

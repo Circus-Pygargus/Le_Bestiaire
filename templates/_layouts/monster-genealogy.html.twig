@@ -1,0 +1,46 @@
+<div id="monster-genealogy">
+    {% if monster.parents %}
+        <h3>Parents</h3>
+        {% for parent in monster.parents %}
+            <figure>
+                <img
+                    src="/uploads/bestiaire/images/{{ parent.featuredImage.fileName }}"
+                    alt="{{ parent.featuredImage.alt }}"
+                    style="
+                        max-width: 400px;
+                        max-height: 400px;
+                        width: auto;
+                        height: auto;
+                    "
+                >
+                <figcaption>
+                    <a href="{{ path('app_monsters', { slug: parent.slug }) }}"
+                    {{ parent.name }}
+                </figcaption>
+            </figure>
+        {% endfor %}
+    {% endif %}
+
+    {% if monster.children %}
+        <h3>Enfants</h3>
+        {% for children in monster.children %}
+            <figure>
+                <img
+                    src="/uploads/bestiaire/images/{{ children.featuredImage.fileName }}"
+                    alt="{{ children.featuredImage.alt }}"
+                    style="
+                        max-width: 400px;
+                        max-height: 400px;
+                        width: auto;
+                        height: auto;
+                    "
+                >
+                <figcaption>
+                    <a href="{{ path('app_monsters', { slug: children.slug }) }}">
+                        {{ children.name }}
+                    </a>
+                </figcaption>
+            </figure>
+        {% endfor %}
+    {% endif %}
+</div>

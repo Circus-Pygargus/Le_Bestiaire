@@ -1,0 +1,17 @@
+<div id="monster-images">
+    {% for image in monster.images %}
+        <figure>
+            <img
+                src="/uploads/bestiaire/images/{{ image.fileName }}"
+                alt="{{ image.alt }}"
+                style="
+                    max-width: 400px;
+                    max-height: 400px;
+                    width: auto;
+                    height: auto;
+                "
+            >
+            <figcaption>{{ image.name }}</figcaption>
+        </figure>
+    {% endfor %}
+</div>
