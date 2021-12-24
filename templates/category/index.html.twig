@@ -1,5 +1,25 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
     <h2>Catégories</h2>
+
+    {% for category in categories %}
+        <figure>
+            <img
+                src="/uploads/bestiaire/images/{{ category.featuredImage.fileName }}"
+                alt="{{ category.featuredImage.alt }}"
+                style="
+                    max-width: 400px;
+                    max-height: 400px;
+                    width: auto;
+                    height: auto;
+                "
+            >
+            <figcaption>{{ category.name }}</figcaption>
+        </figure>
+    {% else %}
+        <p>Il n'y a pas de catégories pour l'instant.</p>
+    {% endfor %}
+
 {% endblock %}
