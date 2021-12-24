@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h2>{{ category.name }}</h2>
+
+    <img
+        src="/uploads/bestiaire/images/{{ category.featuredImage.fileName }}"
+        alt="{{ category.featuredImage.alt }}"
+        style="
+            max-width: 200px;
+            max-height: 200px;
+            width: auto;
+            height: auto;
+        "
+    >
+
+    {% if category.explanatoryText %}
+        <p>{{ category.explanatoryText }}</p>
+    {% endif %}
+
+    <h3>Les monstres</h3>
+    {% for monster in category.monsters %}
+        {% if monster.featuredImage %}
+            <a href="{{ path('app_monsters', { slug: monster.slug }) }}">
+                <figure>
+                    <img
+                            src="/uploads/bestiaire/images/{{ monster.featuredImage.fileName }}"
+                            alt="{{ monster.featuredImage.alt }}"
+                            style="
+                            max-width: 400px;
+                            max-height: 400px;
+                            width: auto;
+                            height: auto;
+                        "
+                    >
+                    <figcaption>{{ monster.name }}</figcaption>
+                </figure>
+            </a>
+        {% endif %}
+    {% else %}
+        <p>Il n'y a pas de monstres répertoriés pour cette catégorie</p>
+    {% endfor %}
+
+{% endblock %}

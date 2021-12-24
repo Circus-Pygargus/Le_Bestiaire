@@ -25,4 +25,16 @@ class CategoryController extends AbstractController
             'categories' => $categories
         ]);
     }
+
+    /**
+     * @Route("/{slug}", name="_show_one")
+     */
+    public function showOne (CategoryRepository $categoryRepository, string $slug): Response
+    {
+        $category = $categoryRepository->findOneBy(['slug' => $slug]);
+
+        return $this->render('category/show-one.html.twig', [
+            'category' => $category
+        ]);
+    }
 }
