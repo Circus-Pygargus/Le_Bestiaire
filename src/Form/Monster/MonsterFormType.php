@@ -95,7 +95,7 @@ class MonsterFormType extends AbstractType
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Créer'
+                'label' => 'Enregistrer'
             ])
         ;
     }
