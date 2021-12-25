@@ -1,0 +1,22 @@
+.monster-nav {
+  width: 100%;
+
+  ul {
+    display: flex;
+    justify-content: space-evenly;
+
+    li {
+      text-align: center;
+      cursor: pointer;
+
+      &.disabled {
+        color: #999999;
+        cursor: default;
+      }
+
+      &.active {
+        color: darkorange;
+      }
+    }
+  }
+}
