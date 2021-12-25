@@ -22,7 +22,7 @@ Encore
      */
     .addStyleEntry('app_home_style', './assets/styles/app-home.scss')
 
-    // .addEntry('app', './assets/app.js')
+    .addEntry('app_monster', './assets/js/app-monster.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     // .enableStimulusBridge('./assets/controllers.json')
