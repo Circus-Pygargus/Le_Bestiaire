@@ -22,14 +22,20 @@
 
     <nav class="monster-nav">
         <ul>
-            <li>Infos</li>
-            <li>Généalogie</li>
-            <li>Images</li>
-            <li>Commentaires ({{ monster.comments|length }})</li>
+            <li class="monster-content-btn" data-target="infos">Infos</li>
+            <li class="monster-content-btn
+                    {% if not monster.parents|length > 0 and not monster.children|length > 0 %} disabled{% endif %}
+                "
+                data-target="genealogy"
+            >
+                Généalogie
+            </li>
+            <li class="monster-content-btn" data-target="images">Images</li>
+            <li class="monster-content-btn" data-target="comments">Commentaires ({{ monster.comments|length }})</li>
         </ul>
     </nav>
 
-    <div>
+    <div id="monster-content">
         {% include '_layouts/monster-infos.html.twig' %}
 
         {% if monster.parents|length > 0 or monster.children|length > 0 %}
@@ -38,9 +44,7 @@
 
         {% include '_layouts/monster-images.html.twig' %}
 
-        {% if monster.comments|length > 0 %}
-            {{ include ('_layouts/comments.html.twig', { comments: monster.comments }) }}
-        {% endif %}
+        {{ include ('_layouts/comments.html.twig', { comments: monster.comments }) }}
     </div>
 
 {% endblock %}
