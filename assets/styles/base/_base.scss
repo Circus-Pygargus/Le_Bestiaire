@@ -11,8 +11,22 @@
 body {
   position: relative;
   box-sizing: border-box;
+  background-color: $background-color-primary;
+  color: $color-white;
 }
 
 .hidden {
   display: none;
+}
+
+a {
+  color: inherit;
+
+  &:focus, &:active {
+    color: inherit;
+  }
+
+  &:hover {
+    color: $color-primary;
+  }
 }
