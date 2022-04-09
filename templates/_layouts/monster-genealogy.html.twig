@@ -3,6 +3,7 @@
         <h3>Parents</h3>
         {% for parent in monster.parents %}
             <figure>
+                {% if parent.featuredImage.filename is defined and parent.featuredImage.filename %}
                 <img
                     src="/uploads/bestiaire/images/{{ parent.featuredImage.fileName }}"
                     alt="{{ parent.featuredImage.alt }}"
@@ -13,6 +14,7 @@
                         height: auto;
                     "
                 >
+                {% endif %}
                 <figcaption>
                     <a href="{{ path('app_monsters', { slug: parent.slug }) }}"
                     {{ parent.name }}
