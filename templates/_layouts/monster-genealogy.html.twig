@@ -16,8 +16,9 @@
                 >
                 {% endif %}
                 <figcaption>
-                    <a href="{{ path('app_monsters', { slug: parent.slug }) }}"
+                    <a href="{{ path('app_monsters', { slug: parent.slug }) }}">
                     {{ parent.name }}
+                    </a>
                 </figcaption>
             </figure>
         {% endfor %}
