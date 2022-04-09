@@ -1,5 +1,5 @@
 <div class="monster-content--sub-div hidden" data-content="genealogy">
-    {% if monster.parents %}
+    {% if monster.parents is defined and monster.parents | length > 0 %}
         <h3>Parents</h3>
         {% for parent in monster.parents %}
             <figure>
@@ -24,7 +24,7 @@
         {% endfor %}
     {% endif %}
 
-    {% if monster.children %}
+    {% if monster.children is defined and monster.children | length > 0 %}
         <h3>Enfants</h3>
         {% for children in monster.children %}
             <figure>
