@@ -16,17 +16,17 @@
 
     {% if monster.birthday %}
         <h3>Date de naissance :</h3>
-        <p>{{ monster.birthday }}</p>
+        <p>{{ monster.birthday | date('d-m-Y') }}</p>
     {% endif %}
 
     {% if monster.arrivalDate %}
             <h3>Date d'arrivée' :</h3>
-        <p>{{ monster.arrivalDate }}</p>
+        <p>{{ monster.arrivalDate | date('d-m-Y') }}</p>
     {% endif %}
 
     {% if monster.leavingDate %}
         <h3>Date de départ :</h3>
-        <p>{{ monster.leavingDate }}</p>
+        <p>{{ monster.leavingDate | date('d-m-Y') }}</p>
     {% endif %}
 
     {% if monster.reasonForLeaving %}

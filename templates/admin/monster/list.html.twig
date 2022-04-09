@@ -61,11 +61,11 @@
                         {% endif %}
                         </td>
 
-                        <td>{% if monster.birthday %}{{ monster.birthday }}{% endif %}</td>
+                        <td>{% if monster.birthday %}{{ monster.birthday | date('d-m-Y') }}{% endif %}</td>
 
-                        <td>{% if monster.arrivalDate %}{{ monster.arrivalDate }}{% endif %}</td>
+                        <td>{% if monster.arrivalDate %}{{ monster.arrivalDate | date('d-m-Y') }}{% endif %}</td>
 
-                        <td>{% if monster.leavingDate %}{{ monster.leavingDate }}{% endif %}</td>
+                        <td>{% if monster.leavingDate %}{{ monster.leavingDate | date('d-m-Y') }}{% endif %}</td>
 
                         <td>{% if monster.reasonForLeaving %}{{ monster.reasonForLeaving }}{% endif %}</td>
 
